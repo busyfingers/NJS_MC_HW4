@@ -5,20 +5,24 @@
 // Dependencies
 const bootstrap = require("./lib/bootstrap");
 const server = require("./lib/server");
+const cli = require("./lib/cli");
 
 // Declare the app
 let app = {};
 
 // Init function
-app.init = () => {
-    // Bootstrap the server
-    bootstrap.do().then(_ => {
+app.init = async () => {
+    try {
+        // Bootstrap the server
+        await bootstrap.do();
         // Start the server
-        server.init();
-    }).catch(err => {
+        await server.init();
+        // Start the CLI
+        cli.init();    
+    } catch (error) {
         // Explode if we get here because then something is wrong
-        throw err;
-    })
+        throw error;
+    }
 };
 
 // Execute
